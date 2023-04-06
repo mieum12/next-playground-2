@@ -1,36 +1,29 @@
-// import { UserDto } from "@/dto/userDto";
-// import { fetchUser } from "@/http/fetchUser";
-// import { useEffect, useState } from "react";
+import { UserDto } from "@/dto/userDto";
+import { fetchUser } from "@/http/user/fetchUser";
+import { useEffect, useState } from "react";
 
-// export function useUser() {
-//   // 상태 관리
-//   const [user, setUser] = useState<UserDto | undefined>();
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState<Error | undefined>();
+export function useUser(userId: number) {
+  const [user, setUser] = useState<undefined | UserDto>();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<undefined | Error>();
 
-//   async function _fetchUser() {
-//     try {
-//       // 네트워크 요청 끝
-//       const user = await fetchUser();
-//       // 성공 시 user set ( user=UserDto,error=undefined,loading=false)
-//       setUser(user);
-//     } catch (err) {
-//       // 네트워크 요청에서 오류 발생
-//       const e = err as Error;
-//       // 실패, error set ( user=undefined,error=Error,loading=false)
-//       setError(e);
-//     } finally {
-//       // 종료 후, 성공이던 실패던 로딩은 끝
-//       setLoading(false);
-//     }
-//   }
+  async function _fetchUser() {
+    try {
+      const user = await fetchUser(userId);
+      setUser(user); //성공시 유저에 담기
+    } catch (err) {
+      const e = err as Error;
+      setError(e); //실패시 에러
+    } finally {
+      //종료: 로딩 끝 true -> false
+      setLoading(false);
+    }
+  }
 
-//   // 여기서 네트워크 요청 처리 !
-//   useEffect(() => {
-//     _fetchUser();
-//   }, []);
-//   // 내보내기 (component가 이거를 사용할 것!)
-//   // 상태 관리를 useUser 훅이 여기서 다 해주기 때문에...
-//   // component는 할 게 업어짐 !!
-//   return { user, loading, error };
-// }
+  useEffect(() => {
+    _fetchUser();
+  }, []);
+  //빈 배열이 deps로 주어져야 페이지가 로드 될 때 새로고침 딱 한번 실행
+
+  return { user, loading, error };
+}
