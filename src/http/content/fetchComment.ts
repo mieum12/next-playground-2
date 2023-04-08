@@ -6,10 +6,10 @@ export async function fetchComment(commentId: number) {
     const { data } = await contentApiClient.get<CommentDto>(
       `/comments/${commentId}`
     );
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (err) {
     const e = err as Error;
-    console.log(e);
+    // console.log(e);
   }
 }

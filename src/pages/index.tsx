@@ -1,5 +1,12 @@
+import { Header } from "@/components/Header";
+
 export default function Home() {
-  return <h1>HOME</h1>;
+  return (
+    <div>
+      <Header />
+      <h1>HOME</h1>
+    </div>
+  );
 }
 // import { useUser } from "@/hooks/useUser";
 

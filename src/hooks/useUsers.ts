@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 export function useUsers() {
   const [users, setUsers] = useState<UserDto[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<undefined | Error>();
+  const [error, setError] = useState<Error | undefined>();
 
   async function _fetchUsers() {
     try {
@@ -13,12 +13,10 @@ export function useUsers() {
       setUsers(users);
     } catch (err) {
       const e = err as Error;
-      setError(e);
     } finally {
       setLoading(false);
     }
   }
-
   useEffect(() => {
     _fetchUsers();
   }, []);
